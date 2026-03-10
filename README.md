@@ -21,6 +21,7 @@
 - Registro automático de votos en base de datos.  
 
 ## 👨‍💻 **Autor:**  
-- Laureano Daniel Carranza  
-  📧 lcarranza@escuelasproa.edu.ar  
-  🐙 [GitHub: LaureanoCz](https://github.com/LaureanoCz) 
+- Leandro Nuñez
+  📧 lenunez@escuelasproa.edu.ar  
+
+  🐙 [GitHub: L](https://github.com/lean-nunez) 

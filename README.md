@@ -20,8 +20,4 @@
 - Pantalla de confirmación con mensaje de éxito.  
 - Registro automático de votos en base de datos.  
 
-## 👨‍💻 **Autor:**  
-- Leandro Nuñez
-  📧 lenunez@escuelasproa.edu.ar  
-
-  🐙 [GitHub: L](https://github.com/lean-nunez) 
+## 👨‍💻 **Autor:** 

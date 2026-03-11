@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Votación PRoA</title>
+
+<style>
+
+:root{
+--cba-rojo:#C83228;
+--cba-blanco:#FFFFFF;
+--cba-azul:#1E325A;
+}
+
+body{
+margin:0;
+font-family:sans-serif;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+
+background:
+linear-gradient(135deg,
+#C83228 0%,
+#FFFFFF 50%,
+#1E325A 100%);
+}
+
+.card{
+background:white;
+padding:40px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
+text-align:center;
+width:400px;
+max-width:90%;
+}
+
+.screen{display:none;}
+.active{display:block;}
+
+h1{
+color:var(--cba-azul);
+}
+
+input{
+width:100%;
+padding:12px;
+margin:20px 0;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+button{
+width:100%;
+padding:15px;
+margin-bottom:10px;
+border:none;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.btn-azul{
+background:var(--cba-azul);
+color:white;
+}
+
+.btn-lista{
+color:white;
+height:60px;
+}
+
+.error{
+color:red;
+font-size:14px;
+margin-bottom:10px;
+display:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<div id="inicio" class="screen active">
+<h1>ELECCIONES PRoA</h1>
+<button class="btn-azul" onclick="mostrar('login')">
+INICIAR VOTACIÓN
+</button>
+</div>
+
+<div id="login" class="screen">
+<h2>Identificación</h2>
+
+<div id="err" class="error"></div>
+
+<input type="email" id="mail" placeholder="usuario@escuelasproa.edu.ar">
+
+<button class="btn-azul" onclick="validar()">
+CONTINUAR
+</button>
+
+</div>
+
+<div id="votos" class="screen">
+
+<h2>Seleccione una opción</h2>
+
+<button class="btn-lista" onclick="votar('LISTA AZUL')" style="background:#2980b9">
+LISTA AZUL
+</button>
+
+<button class="btn-lista" onclick="votar('LISTA NEGRA')" style="background:#2c3e50">
+LISTA NEGRA
+</button>
+
+<button class="btn-lista" onclick="votar('VOTO EN BLANCO')" style="background:#95a5a6">
+VOTO EN BLANCO
+</button>
+
+</div>
+
+<div id="final" class="screen">
+
+<h1 style="color:green">✓</h1>
+
+<h2>Voto Registrado</h2>
+
+<p>Gracias por participar.</p>
+
+</div>
+
+</div>
+
+<script>
+
+let mailActual="";
+
+function mostrar(id){
+
+document.querySelectorAll('.screen')
+.forEach(s=>s.classList.remove('active'));
+
+document.getElementById(id)
+.classList.add('active');
+}
+
+async function validar(){
+
+const input=document.getElementById('mail').value;
+
+const res=await fetch('/validar',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({correo:input})
+});
+
+const data=await res.json();
+
+if(data.status==="success"){
+mailActual=input;
+mostrar('votos');
+}
+
+else{
+const e=document.getElementById('err');
+e.innerText=data.message;
+e.style.display='block';
+}
+
+}
+
+async function votar(opcion){
+
+await fetch('/votar',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+correo:mailActual,
+lista:opcion
+})
+});
+
+mostrar('final');
+
+setTimeout(()=>{
+location.reload();
+},3000);
+
+}
+
+</script>
+
+</body>
+</html>
